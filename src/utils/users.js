@@ -45,6 +45,9 @@ const getUser = (id) => {
   }
   return foundUser;
 }
+
+const getUsers = () => users;
+
 //getUsersInRoom
 const getUsersInRoom = (room) => {
   return users.filter(user => user.room === room);
@@ -53,6 +56,7 @@ const getUsersInRoom = (room) => {
 module.exports = {
   addUser,
   getUser,
+  getUsers,
   removeUser,
   getUsersInRoom
 }

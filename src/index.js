@@ -8,8 +8,10 @@ const {
   addUser,
   getUser,
   removeUser,
-  getUsersInRoom
+  getUsersInRoom,
+  getUsers
 } = require('./utils/users');
+const { addRoom, getRooms, removeRoom } = require('./utils/rooms');
 
 const app = express();
 const server = http.createServer(app);
@@ -32,6 +34,7 @@ io.on('connection', (socket) => {
     }
 
     socket.join(user.room);
+    addRoom(user.room);
     socket.emit('message', generateMessage("Admin", `Welcome ${user.username} to room ${user.room}`));
 
     io.to(user.room).emit('roomData', {
@@ -69,10 +72,18 @@ io.on('connection', (socket) => {
         room: user.room,
         users: getUsersInRoom(user.room)
       });
+      console.log('user:', user.room);
+      removeRoom(getUsers(), user.room);
     }
+    //check if any more users in that room -- if not, removeRoom()
 
   });
+  socket.on('login', () => {
+    const rooms = getRooms();
+    socket.emit('showRooms', rooms);
+  })
 });
+
 
 server.listen(port, () => {
   console.log('Server is up on port localhost:' + port);

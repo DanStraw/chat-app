@@ -14,16 +14,45 @@
   <div class="centered-form">
     <div class="centered-form__box">
       <h1>Join</h1>
-      <form action="/chat.html">
+      <form id="search-type-select">
+        <button id="input">Search Room</button>
+        <div>----------------- or ----------------</div>
+        <button id="select">Select Room</button>
+      </form>
+
+      <form action="/chat.html" id="input-form" hidden>
         <label for="username">Display Name</label>
         <input type="text" name="username" placeholder="Display Name" required>
         <label for="room">Room</label>
         <input type="text" name="room" placeholder="Room" required>
+        <br>
         <button>Join</button>
       </form>
-    </div>
 
+      <form action="/chat.html" id="select-form" hidden>
+        <label for="username">Display Name</label>
+        <input type="text" name="username" placeholder="Display Name" required>
+        <select name="room" id="room-select">
+        </select>
+        <br>
+        <br>
+        <button>Join</button>
+      </form>
+      <br>
+      <button id="back" hidden>&larr; Go Back</button>
+    </div>
   </div>
+
+  <script id="room-option-template" type="text/html">
+    <option value="" disabled selected>-Select-</option>
+    {{#rooms}}
+     <option value={{.}}>{{.}}</option>
+    {{/rooms}}
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/join.js"></script>
 </body>
 
 </html>

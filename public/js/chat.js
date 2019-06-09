@@ -25,7 +25,6 @@ const autoScroll = () => {
   const newMessageMargin = parseInt(newMessageStyles.marginBottom)
   const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
 
-  console.log(newMessageHeight);
   const visibleHeight = $messages.offsetHeight;
 
   //height of messages container
@@ -34,9 +33,7 @@ const autoScroll = () => {
   //how far have we scrolled
   const scrollOffset = $messages.scrollTop + visibleHeight;
 
-  console.log(scrollOffset);
   if (containerHeight - newMessageHeight <= scrollOffset) {
-    console.log('scroll');
     $messages.scrollTop = $messages.scrollHeight;
   }
 }
@@ -95,7 +92,6 @@ $sendLocationButton.addEventListener('click', (e) => {
     const { latitude, longitude } = position.coords;
     socket.emit('sendLocation', { latitude, longitude }, () => {
       $sendLocationButton.removeAttribute('disabled');
-      console.log('location shared!');
     })
   });
 });
