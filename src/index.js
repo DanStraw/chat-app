@@ -35,13 +35,13 @@ io.on('connection', (socket) => {
 
     socket.join(user.room);
     addRoom(user.room);
-    socket.emit('message', generateMessage("Admin", `Welcome ${user.username} to room ${user.room}`));
+    socket.emit('message', generateMessage("Admin", `Welcome ${user.displayName} to room ${user.room}`));
 
     io.to(user.room).emit('roomData', {
       room: user.room,
       users: getUsersInRoom(user.room)
     })
-    socket.broadcast.to(user.room).emit('message', generateMessage("Admin", `${user.username} has joined the room ${user.room}!`));
+    socket.broadcast.to(user.room).emit('message', generateMessage("Admin", `${user.displayName} has joined the room ${user.room}!`));
     callback();
   })
 
@@ -52,13 +52,13 @@ io.on('connection', (socket) => {
       return callback('profanity prohibited!');
     }
     const user = getUser(socket.id);
-    io.to(user.room).emit('message', generateMessage(user.username, message));
+    io.to(user.room).emit('message', generateMessage(user.displayName, message));
     callback();
   });
 
   socket.on('sendLocation', (location, cb) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, `https://google.com/maps?q=${location.latitude},${location.longitude}`));
+    io.to(user.room).emit('locationMessage', generateLocationMessage(user.displayName, `https://google.com/maps?q=${location.latitude},${location.longitude}`));
     cb();
   })
 
@@ -67,12 +67,11 @@ io.on('connection', (socket) => {
     const user = removeUser(socket.id);
 
     if (user) {
-      io.to(user.room).emit('message', generateMessage("Admin", `${user.username} has left ${user.room}`));
+      io.to(user.room).emit('message', generateMessage("Admin", `${user.displayName} has left ${user.room}`));
       io.to(user.room).emit('roomData', {
         room: user.room,
         users: getUsersInRoom(user.room)
       });
-      console.log('user:', user.room);
       removeRoom(getUsers(), user.room);
     }
     //check if any more users in that room -- if not, removeRoom()

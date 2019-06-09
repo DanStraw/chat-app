@@ -15,7 +15,6 @@ const removeRoom = (users, room) => {
   if (index === -1) {
     rooms.splice(rooms.indexOf(room), 1);
   }
-  console.log('remaining rooms:', rooms);
 }
 
 module.exports = {

@@ -3,8 +3,10 @@ const users = [];
 //addUser
 const addUser = ({ id, username, room }) => {
   //clean the data
+  const displayName = username.trim();
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
+
   //validate the data
   if (!username || !room) {
     return {
@@ -21,7 +23,7 @@ const addUser = ({ id, username, room }) => {
       error: 'Username taken'
     }
   }
-  const user = { id, username, room };
+  const user = { id, username, displayName, room };
   users.push(user);
   return { user };
 }
